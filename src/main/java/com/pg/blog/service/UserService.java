@@ -1,7 +1,9 @@
 package com.pg.blog.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pg.blog.model.User;
 import com.pg.blog.repository.UserRepository;
@@ -13,17 +15,15 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public int 회원가입(User user) {
-		
-		try {
+	//회원가입 성공이 되면 commit, 안되면 rollback
+	@Transactional
+	public void userJoin(User user) {
 			userRepository.save(user);
-			return 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("UserService : 회원가입() : " + e.getMessage());
-			// TODO: handle exception
-		}
-		return -1;
 	}
+	
+//	@Transactional(readOnly = true) // Select 할 떄 트랜잭션시작, 서비스 종료시에 트랜잭션 종료 (정합성)
+//	public User userLogin(User user) {
+//			return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+//	}
 
 }

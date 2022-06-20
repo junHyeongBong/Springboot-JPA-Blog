@@ -18,7 +18,7 @@ spring:
   jackson:    serialization:      fail-on-empty-beans: false  server:
   port: 8081
   servlet:
-    context-path: /blog
+    context-path: /
     encoding:
       charset: UTF-8
       enabled: true
