@@ -5,14 +5,15 @@
 
 <div class="container">
 	<form>
+		<input type="hidden"  name="updateId" value="${board.id}">
 		<div class="form-group">
-			<input type="text" name="title" class="form-control" placeholder="Enter title" id="title">
+			<input type="text" class="form-control" placeholder="Enter title" name="updateTitle" value="${board.title}">
 		</div>
 		<div class="form-group">
-		  <textarea class="form-control summernote" rows="5" id="content"></textarea>
+		  <textarea class="form-control summernote" rows="5"  name="updateContent">${board.content}</textarea>
 		</div>
 	</form>
-	<button id="btn-save" class="btn btn-primary">글쓰기완료</button>
+	<button id="btn-update" class="btn btn-primary">글수정완료</button>
 </div>
 
 <script>

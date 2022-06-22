@@ -31,8 +31,37 @@ public class BoardService {
 		boardRepository.save(board);
 	}
 	
+	//글 목록 readOnly = true select만 하니깐
+	@Transactional(readOnly = true)
 	public Page<Board> selectList(Pageable pageable) {
 		return boardRepository.findAll(pageable);
+	}
+	
+	
+	//글 상세보기
+	@Transactional(readOnly = true)
+	public Board selectBoard(int id) {
+		return boardRepository.findById(id)
+				.orElseThrow(()-> {
+					return new IllegalArgumentException("글 상세보기 실패 : 아이디를 찾을 수 없습니다.");
+				});
+	}
+	
+	//글 삭제
+	@Transactional
+	public void deleteBoard(int id) {
+		 boardRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public void updateBoard(int id, Board requestBoard) {
+		Board board = boardRepository.findById(id)
+				.orElseThrow(()-> {
+					return new IllegalArgumentException("글 찾기 실패 : 아이디를 찾을 수 없습니다.");
+				}); //영속화 완료
+		board.setTitle(requestBoard.getTitle());
+		board.setContent(requestBoard.getContent());
+		// 해당 함수로 종료시에 (Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹 - 자동 업데이트가 db flush
 	}
 	
 
