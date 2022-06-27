@@ -9,7 +9,7 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   jpa:
-    open-in-view: true    hibernate:      ddl-auto: update
+    open-in-view: true    hibernate:      ddl-auto: create
       naming:        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: false  
     properties:      hibernate:
@@ -23,3 +23,5 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+cos:
+  key: cos1234

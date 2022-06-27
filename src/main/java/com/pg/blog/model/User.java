@@ -32,7 +32,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 DB의 넘버링 전략을 따라간다.
 	private int id; // 전략이 identity일경우 oracle: 시퀀스, mySql : auto_increment
 	
-	@Column(nullable = false, length = 30, unique = true)
+	@Column(nullable = false, length = 100, unique = true)
 	private String username; // 아이디
 	
 	@Column(nullable = false, length = 100) // 123456 => 해쉬 (비밀번호 암호화)
@@ -40,6 +40,8 @@ public class User {
 	
 	@Column(nullable = false, length = 50)
 	private String email;
+	
+	private String oauth; // kakao, google
 	
 	//@ColumnDefault("'user'")
 	// DB는 RoleType이라는게 없다.
