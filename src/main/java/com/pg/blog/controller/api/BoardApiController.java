@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pg.blog.config.auth.PrincipalDetail;
+import com.pg.blog.dto.ReplySaveRequestDto;
 import com.pg.blog.dto.ResponseDto;
 import com.pg.blog.model.Board;
+import com.pg.blog.model.Reply;
 import com.pg.blog.service.BoardService;
 
 @RestController
@@ -40,8 +42,13 @@ public class BoardApiController {
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
-	
-	
-	
+	// 댓글 데이터 받을 때 컨트롤러에서 dto를 만들어서 받는게 좋다.
+	// dto 사용하지 않는 이유는!! 
+	@PostMapping("/api/board/{boardId}/reply")
+	public ResponseDto<Integer> replySave(@RequestBody ReplySaveRequestDto replySaveRequestDto) {
+		
+		boardService.replyWrite(replySaveRequestDto);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); 
+	}
 	
 }

@@ -14,6 +14,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.pg.blog.dto.ReplySaveRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,5 +45,5 @@ public class Reply {
 	
 	@CreationTimestamp
 	private Timestamp createDate;
-
+	
 }

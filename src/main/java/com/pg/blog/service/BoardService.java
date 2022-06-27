@@ -10,10 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pg.blog.dto.ReplySaveRequestDto;
 import com.pg.blog.model.Board;
+import com.pg.blog.model.Reply;
 import com.pg.blog.model.RoleType;
 import com.pg.blog.model.User;
 import com.pg.blog.repository.BoardRepository;
+import com.pg.blog.repository.ReplyRepository;
 import com.pg.blog.repository.UserRepository;
 
 // 스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌. IoC를 해준다.
@@ -22,6 +25,12 @@ public class BoardService {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private ReplyRepository replyRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	//회원가입 성공이 되면 commit, 안되면 rollback
 	@Transactional
@@ -62,6 +71,26 @@ public class BoardService {
 		board.setTitle(requestBoard.getTitle());
 		board.setContent(requestBoard.getContent());
 		// 해당 함수로 종료시에 (Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹 - 자동 업데이트가 db flush
+	}
+	
+	@Transactional
+	public void replyWrite(ReplySaveRequestDto replySaveRequestDto) {
+		
+		User user = userRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
+			return new IllegalArgumentException("댓글 쓰기 실패 : 유저 id를 찾을 수 없습니다.");
+		}); //영속화 완료
+		
+		Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
+			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
+		}); //영속화 완료
+		
+		Reply reply = Reply.builder()
+				.user(user)
+				.board(board)
+				.content(replySaveRequestDto.getContent())
+				.build();
+		
+		replyRepository.save(reply);
 	}
 	
 
