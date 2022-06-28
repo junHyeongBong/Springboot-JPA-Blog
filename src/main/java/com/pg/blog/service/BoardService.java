@@ -19,15 +19,20 @@ import com.pg.blog.repository.BoardRepository;
 import com.pg.blog.repository.ReplyRepository;
 import com.pg.blog.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 // 스프링이 컴포넌트 스캔을 통해서 Bean에 등록을 해줌. IoC를 해준다.
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 	
-	@Autowired
-	private BoardRepository boardRepository;
+	private final BoardRepository boardRepository;
+	private final ReplyRepository replyRepository;
 	
-	@Autowired
-	private ReplyRepository replyRepository;
+//	@Autowired
+//	private BoardRepository boardRepository;
+//	@Autowired
+//	private ReplyRepository replyRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -76,21 +81,28 @@ public class BoardService {
 	@Transactional
 	public void replyWrite(ReplySaveRequestDto replySaveRequestDto) {
 		
-		User user = userRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
-			return new IllegalArgumentException("댓글 쓰기 실패 : 유저 id를 찾을 수 없습니다.");
-		}); //영속화 완료
+//		User user = userRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
+//			return new IllegalArgumentException("댓글 쓰기 실패 : 유저 id를 찾을 수 없습니다.");
+//		}); //영속화 완료
+//		
+//		Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
+//			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
+//		}); //영속화 완료
 		
-		Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()-> {
-			return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
-		}); //영속화 완료
+//		Reply reply = Reply.builder()
+//				.user(user)
+//				.board(board)
+//				.content(replySaveRequestDto.getContent())
+//				.build();
 		
-		Reply reply = Reply.builder()
-				.user(user)
-				.board(board)
-				.content(replySaveRequestDto.getContent())
-				.build();
+//		replyRepository.save(reply);
 		
-		replyRepository.save(reply);
+		replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+	}
+	
+	@Transactional
+	public void deleteReply(int replyId) {
+		replyRepository.deleteById(replyId);
 	}
 	
 
